@@ -46,11 +46,18 @@
 		flex-direction: column;
 
 		.share-content-container {
-			display: grid;
-			grid-template-rows: 72px 1fr;
-			gap: 32px;
+			display: flex;
 			height: 350px;
 			padding: 50px 22px 40px;
+		}
+
+		.image-display {
+			width: 100%;
+			max-width: 300px;
+			margin: 0 auto;
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: top center;
 		}
 	}
 
@@ -92,11 +99,35 @@
 		}
 
 		input[type="color"] {
+			cursor: pointer;
 			width: 40px;
 			height: 40px;
-			border-radius: 3px;
 			margin-left: 14px;
 			margin-top: -8px;
+		}
+
+		// Gallery
+		.gallery-container {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 12px;
+
+			.gallery-image-button {
+				border: none;
+				padding: 10px;
+				opacity: .7;
+				transition: opacity 200ms ease-in-out;
+				background-color: black;
+				cursor: pointer;
+
+				&:hover {
+					opacity: 1;
+				}
+			}
+
+			.gallery-image {
+				width: 100%;
+			}
 		}
 	}
 }
