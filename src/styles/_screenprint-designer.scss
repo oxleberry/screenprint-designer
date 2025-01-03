@@ -21,7 +21,7 @@
 		justify-content: center;
 		align-items: center;
 		min-height: calc(100vh - var(--not-main-height));
-		grid-template-columns: 350px .6fr;
+		grid-template-columns: .85fr 1fr;
 		gap: 48px;
 		max-width: 1400px;
 		margin: 0 auto;
@@ -39,16 +39,21 @@
 	}
 
 	// ========================
-	// Share Content Section
+	// Design Layout Section
 	// ========================
-	.share-content-section {
+	.design-layout-section {
 		display: flex;
 		flex-direction: column;
 
-		.share-content-container {
+		.design-layout-container {
+			border: 8px solid var(--options-color);
+		}
+
+		.tee-image {
+			position: relative;
+			width: 100%;
+			pointer-events: none;
 			display: flex;
-			height: 350px;
-			padding: 50px 22px 40px;
 		}
 
 		.image-display {

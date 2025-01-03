@@ -24,6 +24,7 @@ export default function ScreenprintDesigner() {
 	]
 
 	// States =================
+	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
 	const [backgroundColor, setBackgroundColor] = useState('#000000');
 	const [galleryImagePath, setGalleryImagePath] = useState('');
 
@@ -43,9 +44,14 @@ export default function ScreenprintDesigner() {
 			<h1>Screenprint Designer</h1>
 			<main className="screenprint-designer-page">
 
-				<section className="share-content-section">
-					<div className="share-content-container" style={{background: `${backgroundColor}`}}>
-						<h2 className="hidden">Share Content</h2>
+				{/* Design layout container */}
+				<section className="design-layout-section">
+					<div
+						className="design-layout-container"
+						style={{background: `${backgroundColor}`}}
+					>
+						<h2 className="hidden">Design layout workspace</h2>
+						<img className="tee-image" src={`/images/${garmentStyle}.png`} alt="screenprint designer workspace"/>
 						<div className="image-display" style={{backgroundImage: `url(${galleryImagePath})`}} />
 					</div>
 				</section>
@@ -75,7 +81,7 @@ export default function ScreenprintDesigner() {
 									type="button"
 									className="gallery-image-button button-black"
 									onClick={galleryClickHandler}>
-									<img 
+									<img
 										className={`gallery-image gallery-image-${image.id}`}
 										src={image.url}/>
 								</button>
