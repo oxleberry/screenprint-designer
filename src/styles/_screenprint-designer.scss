@@ -98,6 +98,62 @@
 			padding-bottom: 14px;
 		}
 
+		// =========================
+		// Garment Style
+		// =========================
+		.option-garment-style {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 20px;
+
+			.option-garment {
+				text-align: center;
+			}
+
+			input[type="radio"] {
+			// Guide to styling radio buttons
+			// https://dev.to/adbutterfield/custom-styling-radio-buttons-the-modern-way-the-butterfield-way-emk
+				--radio-border-color: var(--options-color-light);
+				--radio-checked-color: var(--options-color);
+
+				box-sizing: border-box;
+				cursor: pointer;
+				width: 20px;
+				height: 20px;
+				margin: 6px;
+				padding: 0;
+				border: 2px solid var(--radio-border-color);
+				border-radius: 50%;
+				appearance: none;
+				background-color: transparent;
+				outline: none;
+
+				&:hover {
+					box-shadow: 0 0 0 2px var(--options-color-light);
+					transition: all 200ms ease-out;
+				}
+			}
+
+			input[type="radio"]:not(:disabled):checked {
+				border-color: var(--radio-checked-color);
+				background-color: var(--radio-checked-color);
+				background-clip: content-box;
+				padding: 2px;
+				background-image: radial-gradient(
+					circle,
+					var(--radio-checked-color) 0%,
+					var(--radio-checked-color) 50%,
+					transparent 60%,
+					transparent 100%
+				);
+
+				&:hover {
+					box-shadow: 0 0 0 2px transparent;
+					cursor: inherit;
+				}
+			}
+		}
+
 		// Custom Color
 		.option-color {
 			display: flex;

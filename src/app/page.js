@@ -5,6 +5,27 @@ import '../styles/globals.scss';
 
 
 export default function ScreenprintDesigner() {
+	const initialGarmentStyleData = [
+		{
+			id: 1,
+			name: 'Adult',
+			value: 'adult-tee',
+			isActive: true
+		},
+		{
+			id: 2,
+			name: 'Womens',
+			value: 'womens-tee',
+			isActive: false
+		},
+		{
+			id: 3,
+			name: 'Onesie',
+			value: 'onesie',
+			isActive: false
+		}
+	]
+
 	const initialGalleryImageData = [
 		{
 			id: 1,
@@ -29,6 +50,11 @@ export default function ScreenprintDesigner() {
 	const [galleryImagePath, setGalleryImagePath] = useState('');
 
 	// Functions =================
+	function garmentStyleHandler(event) {
+		let value = event.target.value;
+		setGarmentStyle(value);
+	}
+
 	function backgroundColorHandler(event) {
 		let value = event.target.value;
 		setBackgroundColor(value);
@@ -59,6 +85,25 @@ export default function ScreenprintDesigner() {
 				{/* Option Section */}
 				<section className="options-container">
 					<h2 className="hidden">Options</h2>
+					{/* Option - Garment style */}
+					<div className="option option-garment-style">
+						<legend className="option-label">Garment style:</legend>
+						{initialGarmentStyleData.map((garment, idx) =>
+							<div key={idx} className="option-garment">
+								<input
+									id={garment.value}
+									className="custom-garment"
+									name="custom-garment"
+									type="radio"
+									value={garment.value}
+									defaultChecked={garment.isActive}
+									onChange={garmentStyleHandler}
+								/>
+								<label htmlFor={garment.value} className="option-label">{garment.name}</label>
+							</div>
+						)}
+					</div>
+
 					{/* Option Pick a Color */}
 					<div className="option option-color">
 						<label htmlFor="custom-color" className="option-label">Pick a background color:</label>
