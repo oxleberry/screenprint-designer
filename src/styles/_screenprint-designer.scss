@@ -74,7 +74,7 @@
 		display: grid;
 		height: 100%;
 
-		.option {
+		.option-section {
 			border-bottom: 4px solid var(--options-color);
 			padding: 18px 18px 18px;
 
@@ -154,17 +154,71 @@
 			}
 		}
 
-		// Custom Color
-		.option-color {
+		// =========================
+		// Garment Color
+		// =========================
+		.option-garment-color {
 			display: flex;
-		}
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 8px;
 
-		input[type="color"] {
-			cursor: pointer;
-			width: 40px;
-			height: 40px;
-			margin-left: 14px;
-			margin-top: -8px;
+			.option-label {
+				margin-right: 4px;
+			}
+
+			.option-color {
+				text-align: center;
+			}
+
+			input[type="radio"] {
+				--radio-border-color: var(--options-color-light);
+				cursor: pointer;
+				width: 28px;
+				height: 28px;
+				border-radius: 0;
+				margin: 2px;
+				appearance: none;
+			}
+
+			input[type="radio"].color-white {
+				border: 2px solid var(--radio-border-color);
+			}
+
+			input[type="radio"] + label {
+				opacity: 0;
+				font-size: 5px;
+			}
+
+			input[type="color"] {
+				cursor: pointer;
+				width: 40px;
+				height: 40px;
+				margin-left: 14px;
+				margin-top: -8px;
+			}
+
+			input[type="color"] {
+				cursor: pointer;
+				width: 35px;
+				height: 40px;
+				border: 0 solid transparent;
+				background-color: transparent;
+				margin-top: -3px;
+				color: transparent;
+			}
+
+			input[type="color"]::-webkit-color-swatch {
+				border-radius: 0;
+				border: none;
+				height: 28px;
+			}
+
+			input[type="color"]:not(:disabled):hover,
+			input[type="radio"]:not(:disabled):hover {
+				transform: scale(1.15);
+				transition: all 200ms ease-out;
+			}
 		}
 
 		// Gallery

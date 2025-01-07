@@ -26,6 +26,69 @@ export default function ScreenprintDesigner() {
 		}
 	]
 
+	const initialGarmentColorData = [
+		{
+			id: 1,
+			name: 'black',
+			value: '#1d1d1d',
+			isActive: true
+		},
+		{
+			id: 2,
+			name: 'red',
+			value: '#d41b02',
+			isActive: false
+		},
+		{
+			id: 3,
+			name: 'gold',
+			value: '#ffaa00',
+			isActive: false
+		},
+		{
+			id: 4,
+			name: 'olive',
+			value: '#5f6e1f',
+			isActive: false
+		},
+		{
+			id: 5,
+			name: 'navy',
+			value: '#022c59',
+			isActive: false
+		},
+		{
+			id: 6,
+			name: 'pink',
+			value: '#ffade2',
+			isActive: false
+		},
+		{
+			id: 7,
+			name: 'charcoal',
+			value: '#4d4b49',
+			isActive: false
+		},
+		{
+			id: 8,
+			name: 'tan',
+			value: '#cbb699',
+			isActive: false
+		},
+		{
+			id: 9,
+			name: 'grey',
+			value: '#bfbebb',
+			isActive: false
+		},
+		{
+			id: 10,
+			name: 'white',
+			value: '#fff',
+			isActive: false
+		}
+	]
+
 	const initialGalleryImageData = [
 		{
 			id: 1,
@@ -46,7 +109,7 @@ export default function ScreenprintDesigner() {
 
 	// States =================
 	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
-	const [backgroundColor, setBackgroundColor] = useState('#000000');
+	const [garmentColor, setGarmentColor] = useState('#1d1d1d');
 	const [galleryImagePath, setGalleryImagePath] = useState('');
 
 	// Functions =================
@@ -55,9 +118,9 @@ export default function ScreenprintDesigner() {
 		setGarmentStyle(value);
 	}
 
-	function backgroundColorHandler(event) {
+	function garmentColorHandler(event) {
 		let value = event.target.value;
-		setBackgroundColor(value);
+		setGarmentColor(value);
 	}
 
 	function galleryClickHandler(event) {
@@ -74,7 +137,7 @@ export default function ScreenprintDesigner() {
 				<section className="design-layout-section">
 					<div
 						className="design-layout-container"
-						style={{background: `${backgroundColor}`}}
+						style={{background: garmentColor}}
 					>
 						<h2 className="hidden">Design layout workspace</h2>
 						<img className="tee-image" src={`/images/${garmentStyle}.png`} alt="screenprint designer workspace"/>
@@ -86,7 +149,7 @@ export default function ScreenprintDesigner() {
 				<section className="options-container">
 					<h2 className="hidden">Options</h2>
 					{/* Option - Garment style */}
-					<div className="option option-garment-style">
+					<div className="option-section option-garment-style">
 						<legend className="option-label">Garment style:</legend>
 						{initialGarmentStyleData.map((garment, idx) =>
 							<div key={idx} className="option-garment">
@@ -104,20 +167,39 @@ export default function ScreenprintDesigner() {
 						)}
 					</div>
 
-					{/* Option Pick a Color */}
-					<div className="option option-color">
-						<label htmlFor="custom-color" className="option-label">Pick a background color:</label>
-						<input
-							id="custom-color"
-							className="custom-color"
-							name="custom-color"
-							type="color"
-							value={backgroundColor}
-							onChange={backgroundColorHandler}
-						/>
+					{/* Option - Garment Color */}
+					<div className="option-section option-garment-color">
+						<legend className="option-label">Garment color:</legend>
+						{initialGarmentColorData.map((color, idx) =>
+							<div key={idx} className="option-color">
+								<input
+									id={`color-${color.name}`}
+									className={`color-${color.name}`}
+									name="color-selector"
+									type="radio"
+									value={color.value}
+									defaultChecked={color.isActive}
+									onChange={garmentColorHandler}
+									style={{background: color.value}}
+								/>
+								<label htmlFor={`color-${color.name}`} className="option-label">{color.name}</label>
+							</div>
+						)}
+						<div className="option-color">
+							<input
+								id="color-custom"
+								className="color-custom"
+								name="color-custom"
+								type="color"
+								defaultValue="#9daec1"
+								onChange={garmentColorHandler}
+							/>
+							<label htmlFor="custom-color" className="option-label">Custom</label>
+						</div>
 					</div>
+
 					{/* Option Galley Image */}
-					<div className="option option-image">
+					<div className="option-section option-image">
 						<label className="option-label">Choose an image:</label>
 						<div className="gallery-container">
 							{initialGalleryImageData.map((image, idx) =>
