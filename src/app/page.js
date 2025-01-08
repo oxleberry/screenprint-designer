@@ -111,6 +111,15 @@ export default function ScreenprintDesigner() {
 	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
 	const [garmentColor, setGarmentColor] = useState('#1d1d1d');
 	const [galleryImagePath, setGalleryImagePath] = useState('');
+	const [startPos, setStartPos] = useState({ x: null, y: null});
+	const [artPos, setArtPos] = useState({ x: 170, y: 155});
+
+	// Variables =================
+	const borderWidth = 8;
+
+	// Elements
+	const dragContainerRef = useRef(null);
+	const dragArtImageRef = useRef(null);
 
 	// Functions =================
 	function garmentStyleHandler(event) {
@@ -128,6 +137,48 @@ export default function ScreenprintDesigner() {
 		setGalleryImagePath(imagePath);
 	}
 
+	// =======================================
+	// Draggable Image functions
+	// =======================================
+	function dragStartHandler(event) {
+		if (event.target == null) return;
+		// store cursor start position
+		setStartPos({
+			x: event.clientX,
+			y: event.clientY
+		});
+	}
+
+	function dragOverHandler(event) {
+		if (event.target == null) return;
+		event.preventDefault();
+		// calculate new position
+		let mouseX = event.clientX;
+		let mouseY = event.clientY;
+		let distanceX = mouseX - startPos.x;
+		let distanceY = mouseY - startPos.y;
+		// update position
+		dragArtImageRef.current.style.left = artPos.x + distanceX + 'px';
+		dragArtImageRef.current.style.top = artPos.y + distanceY + 'px';
+	}
+
+	function dragDropHandler(event) {
+		if (event.target == null) return;
+		event.preventDefault();
+		// calculate distance from parent container (adjusting for border thickness)
+		let parentDistX = dragContainerRef.current.getBoundingClientRect().left;
+		let artDistX = dragArtImageRef.current.getBoundingClientRect().left;
+		let newPosX = artDistX - parentDistX - borderWidth;
+		let parentDistY = dragContainerRef.current.getBoundingClientRect().top;
+		let artDistY = dragArtImageRef.current.getBoundingClientRect().top;
+		let newPosY = artDistY - parentDistY - borderWidth;
+		// save new position
+		setArtPos({
+			x: newPosX,
+			y: newPosY
+		});
+	}
+
 	return (
 		<div className="full-backboard screenprint-designer-page">
 			<h1>Screenprint Designer</h1>
@@ -137,11 +188,22 @@ export default function ScreenprintDesigner() {
 				<section className="design-layout-section">
 					<div
 						className="design-layout-container"
-						style={{background: garmentColor}}
+						ref={dragContainerRef}
+						onDragOver={event => dragOverHandler(event, false)}
+						onDrop={event => dragDropHandler(event, false)}
+						style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
 					>
 						<h2 className="hidden">Design layout workspace</h2>
-						<img className="tee-image" src={`/images/${garmentStyle}.png`} alt="screenprint designer workspace"/>
-						<div className="image-display" style={{backgroundImage: `url(${galleryImagePath})`}} />
+						<img className="tee-image" src={`/images/${garmentStyle}.png`} />
+						<img
+							src={galleryImagePath}
+							alt=""
+							className="image-display"
+							ref={dragArtImageRef}
+							draggable
+							onDragStart={e => dragStartHandler(e, false)}
+							style={{left: artPos.x, top: artPos.y}}
+						/>
 					</div>
 				</section>
 

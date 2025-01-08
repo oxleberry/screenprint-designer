@@ -46,7 +46,9 @@
 		flex-direction: column;
 
 		.design-layout-container {
+			position: relative;
 			border: 8px solid var(--options-color);
+			overflow: hidden;
 		}
 
 		.tee-image {
@@ -60,9 +62,11 @@
 			width: 100%;
 			max-width: 300px;
 			margin: 0 auto;
-			background-repeat: no-repeat;
-			background-size: contain;
-			background-position: top center;
+			position: absolute;
+		}
+
+		[draggable] {
+			cursor: move;
 		}
 	}
 
