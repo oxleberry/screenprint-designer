@@ -156,6 +156,14 @@ export default function ScreenprintDesigner() {
 			x: event.clientX,
 			y: event.clientY
 		});
+		// set all other designs to not be draggable
+		setDesigns(designs.map(design => {
+			if (design.id == event.target.id) { // find unique item
+				return design; // no changes to target item
+			} else {
+				return { ...design, dragClass: 'no-drag' }; // update all other items
+			}
+		}));
 	}
 
 	function dragOverHandler(event) {
@@ -184,9 +192,9 @@ export default function ScreenprintDesigner() {
 		// update position of art & reset all items to be draggable
 		setDesigns(designs.map(design => {
 			if (design.id == event.target.id) { // find unique item
-				return { ...design, posX: newPosX, posY: newPosY }; // update target item
+				return { ...design, posX: newPosX, posY: newPosY, dragClass: 'draggable' }; // update target item
 			} else {
-				return { ...design }; // update all other items
+				return { ...design, dragClass: 'draggable' }; // update all other items
 			}
 		}));
 		// clear target element
@@ -215,7 +223,7 @@ export default function ScreenprintDesigner() {
 								alt=""
 								key={idx}
 								id={idx}
-								className={`image-display design-${idx}`}
+								className={`image-display design-${idx} ${design.dragClass}`}
 								ref={dragArtImageRef}
 								draggable
 								onDragStart={event => dragStartHandler(event, false)}

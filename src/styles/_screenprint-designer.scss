@@ -68,6 +68,10 @@
 		[draggable] {
 			cursor: move;
 		}
+
+		.no-drag {
+			pointer-events: none;
+		}
 	}
 
 	// =====================
