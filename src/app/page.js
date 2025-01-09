@@ -110,9 +110,10 @@ export default function ScreenprintDesigner() {
 	// States =================
 	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
 	const [garmentColor, setGarmentColor] = useState('#1d1d1d');
-	const [galleryImagePath, setGalleryImagePath] = useState('');
-	const [startPos, setStartPos] = useState({ x: null, y: null});
-	const [artPos, setArtPos] = useState({ x: 170, y: 155});
+	const [startCursorPos, setStartCursorPos] = useState({ x: null, y: null});
+	const [curDragElem, setCurDragElem] = useState(null);
+	const [designs, setDesigns] = useState([]);
+	const [designIdx, setDesignIdx] = useState(-1);
 
 	// Variables =================
 	const borderWidth = 8;
@@ -134,7 +135,14 @@ export default function ScreenprintDesigner() {
 
 	function galleryClickHandler(event) {
 		let imagePath = event.target.src;
-		setGalleryImagePath(imagePath);
+		let nextId = designIdx + 1;
+		setDesignIdx(nextId);
+		setDesigns( // Replace the state
+			[ // with a new array
+				...designs, // that contains all the old items
+				{ id: nextId, posX: 170, posY: 150, path: imagePath, dragClass: 'draggable' } // and one new item at the end
+			]
+		);
 	}
 
 	// =======================================
@@ -142,8 +150,9 @@ export default function ScreenprintDesigner() {
 	// =======================================
 	function dragStartHandler(event) {
 		if (event.target == null) return;
-		// store cursor start position
-		setStartPos({
+		// track current design & cursor start position
+		setCurDragElem(event.target);
+		setStartCursorPos({
 			x: event.clientX,
 			y: event.clientY
 		});
@@ -152,31 +161,36 @@ export default function ScreenprintDesigner() {
 	function dragOverHandler(event) {
 		if (event.target == null) return;
 		event.preventDefault();
+		let currentDesign = designs.find(design => design.id == event.target.id);
+		if (currentDesign == undefined) return;
 		// calculate new position
-		let mouseX = event.clientX;
-		let mouseY = event.clientY;
-		let distanceX = mouseX - startPos.x;
-		let distanceY = mouseY - startPos.y;
-		// update position
-		dragArtImageRef.current.style.left = artPos.x + distanceX + 'px';
-		dragArtImageRef.current.style.top = artPos.y + distanceY + 'px';
+		let cursorX = event.clientX;
+		let cursorY = event.clientY;
+		let distanceX = cursorX - startCursorPos.x;
+		let distanceY = cursorY - startCursorPos.y;
+		curDragElem.style.left = currentDesign.posX + distanceX + 'px';
+		curDragElem.style.top = currentDesign.posY + distanceY + 'px';
 	}
 
 	function dragDropHandler(event) {
 		if (event.target == null) return;
 		event.preventDefault();
-		// calculate distance from parent container (adjusting for border thickness)
 		let parentDistX = dragContainerRef.current.getBoundingClientRect().left;
-		let artDistX = dragArtImageRef.current.getBoundingClientRect().left;
+		let artDistX = curDragElem.getBoundingClientRect().left;
 		let newPosX = artDistX - parentDistX - borderWidth;
 		let parentDistY = dragContainerRef.current.getBoundingClientRect().top;
-		let artDistY = dragArtImageRef.current.getBoundingClientRect().top;
+		let artDistY = curDragElem.getBoundingClientRect().top;
 		let newPosY = artDistY - parentDistY - borderWidth;
-		// save new position
-		setArtPos({
-			x: newPosX,
-			y: newPosY
-		});
+		// update position of art & reset all items to be draggable
+		setDesigns(designs.map(design => {
+			if (design.id == event.target.id) { // find unique item
+				return { ...design, posX: newPosX, posY: newPosY }; // update target item
+			} else {
+				return { ...design }; // update all other items
+			}
+		}));
+		// clear target element
+		setCurDragElem(null);
 	}
 
 	return (
@@ -195,15 +209,19 @@ export default function ScreenprintDesigner() {
 					>
 						<h2 className="hidden">Design layout workspace</h2>
 						<img className="tee-image" src={`/images/${garmentStyle}.png`} />
-						<img
-							src={galleryImagePath}
-							alt=""
-							className="image-display"
-							ref={dragArtImageRef}
-							draggable
-							onDragStart={e => dragStartHandler(e, false)}
-							style={{left: artPos.x, top: artPos.y}}
-						/>
+						{designs.map((design, idx) =>
+							<img
+								src={design.path}
+								alt=""
+								key={idx}
+								id={idx}
+								className={`image-display design-${idx}`}
+								ref={dragArtImageRef}
+								draggable
+								onDragStart={event => dragStartHandler(event, false)}
+								style={{left: design.posX, top: design.posY}}
+							/>
+						)}
 					</div>
 				</section>
 
