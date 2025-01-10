@@ -58,9 +58,7 @@
 			display: flex;
 		}
 
-		.image-display {
-			width: 100%;
-			max-width: 300px;
+		.design-image {
 			margin: 0 auto;
 			position: absolute;
 		}
@@ -250,6 +248,31 @@
 
 			.gallery-image {
 				width: 100%;
+			}
+		}
+
+		// =========================
+		// Art Size
+		// =========================
+		.option-size {
+			display: flex;
+
+			.option-label {
+				margin-right: 10px;
+			}
+
+			.size-control {
+				cursor: pointer;
+				width: 40px;
+				color: var(--options-color);
+				font-size: 26px;
+				font-weight: bold;
+				border-radius: 2px;
+				border: 1px solid #a8b6c5;
+				background-color: #d7e0e8;
+				background-image: linear-gradient(#f1f5fb, #d7e0e8);
+				padding-bottom: 7px;
+				margin: 0 8px;
 			}
 		}
 	}

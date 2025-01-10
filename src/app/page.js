@@ -137,12 +137,40 @@ export default function ScreenprintDesigner() {
 		let imagePath = event.target.src;
 		let nextId = designIdx + 1;
 		setDesignIdx(nextId);
-		setDesigns( // Replace the state
-			[ // with a new array
-				...designs, // that contains all the old items
-				{ id: nextId, posX: 170, posY: 150, path: imagePath, dragClass: 'draggable' } // and one new item at the end
+		// add new design
+		setDesigns(
+			[
+				...designs,
+				{
+					id: nextId,
+					path: imagePath,
+					posX: 175,
+					posY: 130,
+					width: 220,
+					dragClass: 'draggable'
+				}
 			]
 		);
+	}
+
+	function sizeClickHandler(event) {
+		if (curDragElem == null) return;
+		let increment = 30;
+		let updateWidth;
+		// increment based on button clicked
+		if (event.target.id == "plus") {
+			updateWidth = curDragElem.width + increment;
+		} else if (event.target.id == "minus") {
+			updateWidth = curDragElem.width - increment;
+		}
+		// update width of current design
+		setDesigns(designs.map(design => {
+			if (design.id == curDragElem.id) {
+				return { ...design, width: updateWidth };
+			} else {
+				return design;
+			}
+		}));
 	}
 
 	// =======================================
@@ -198,7 +226,7 @@ export default function ScreenprintDesigner() {
 			}
 		}));
 		// clear target element
-		setCurDragElem(null);
+		// setCurDragElem(null);
 	}
 
 	return (
@@ -223,11 +251,11 @@ export default function ScreenprintDesigner() {
 								alt=""
 								key={idx}
 								id={idx}
-								className={`image-display design-${idx} ${design.dragClass}`}
+								className={`design-image design-${idx} ${design.dragClass}`}
 								ref={dragArtImageRef}
 								draggable
 								onDragStart={event => dragStartHandler(event, false)}
-								style={{left: design.posX, top: design.posY}}
+								style={{left: design.posX, top: design.posY, width: design.width}}
 							/>
 						)}
 					</div>
@@ -302,6 +330,21 @@ export default function ScreenprintDesigner() {
 								</button>
 							)}
 						</div>
+					</div>
+
+					{/* Option - Size */}
+					<div className="option-section option-size">
+						<label className="option-label">Art size:</label>
+						<button
+							id="minus"
+							className="size-control"
+							onClick={sizeClickHandler}
+						>-</button>
+						<button
+							id="plus"
+							className="size-control"
+							onClick={sizeClickHandler}
+						>+</button>
 					</div>
 				</section>
 
