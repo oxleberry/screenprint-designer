@@ -58,9 +58,14 @@
 			display: flex;
 		}
 
+		.design-image-wrapper {
+			width: 100%;
+			position: absolute;
+		}
+
 		.design-image {
 			margin: 0 auto;
-			position: absolute;
+			width: 100%;
 		}
 
 		[draggable] {
