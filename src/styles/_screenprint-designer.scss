@@ -252,18 +252,33 @@
 		}
 
 		// =========================
-		// Art Size
+		// Art Size & Rotate
 		// =========================
-		.option-size {
-			display: flex;
+		.option-size-rotate {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			padding: 0;
+
+			.sub-container {
+				display: flex;
+
+				&:nth-child(n + 2) {
+					&::before {
+						content: '';
+						height: 100%;
+						width: 4px;
+						background-color: var(--options-color);
+					}
+				}
+			}
 
 			.option-label {
 				margin-right: 10px;
 			}
 
-			.size-control {
+			.option-button {
 				cursor: pointer;
-				width: 40px;
+				width: 42px;
 				color: var(--options-color);
 				font-size: 26px;
 				font-weight: bold;
@@ -272,7 +287,40 @@
 				background-color: #d7e0e8;
 				background-image: linear-gradient(#f1f5fb, #d7e0e8);
 				padding-bottom: 7px;
-				margin: 0 8px;
+				margin: 0 6px;
+				transition: transform 200ms ease-in-out;
+
+				&:hover {
+					transform: scale(1.1);
+					transition: transform 200ms ease-in-out;
+				}
+			}
+
+			.option-size,
+			.option-rotate {
+				display: flex;
+				padding: 18px 18px;
+			}
+
+			.rotate-icon {
+				display: block;
+				pointer-events: none;
+				width: 28px;
+				margin-top: 6px;
+				margin-left: auto;
+				margin-right: auto;
+
+				path {
+					fill: var(--options-color);
+				}
+			}
+
+			.rotate-left {
+				transform: rotate(8deg);
+			}
+
+			.rotate-right {
+				transform: rotate(-8deg) scaleX(-1);
 			}
 		}
 	}
