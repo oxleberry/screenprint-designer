@@ -133,7 +133,7 @@ export default function ScreenprintDesigner() {
 
 	// Elements
 	const dragContainerRef = useRef(null);
-	let designRefs = useRef([]);
+	let designRefs = useRef([null]);
 
 	// Functions =================
 	function garmentStyleHandler(event) {
@@ -182,15 +182,17 @@ export default function ScreenprintDesigner() {
 		return { x: newPosX, y: updateY };
 	}
 
-	function sizeClickHandler(event) {
-		let currentDesign;
+	function getCurrentDesign() {
 		if (curDragElem == null) {
-			// if design has not been dragged, use most recent picked image
 			let recentDesignAdded = designRefs.current[designRefs.current.length - 1];
-			currentDesign = recentDesignAdded;
+			return recentDesignAdded;
 		} else {
-			currentDesign = curDragElem;
+			return curDragElem
 		}
+	}
+
+	function sizeClickHandler(event) {
+		let currentDesign = getCurrentDesign();
 		let currentPos = getDesignPosition(currentDesign);
 		let increment = 30;
 		let updateWidth;
@@ -220,14 +222,7 @@ export default function ScreenprintDesigner() {
 	}
 
 	function rotateClickHandler(event) {
-		let currentDesign;
-		if (curDragElem == null) {
-			// if design has not been dragged, use most recent picked image
-			let recentDesignAdded = designRefs.current[designRefs.current.length - 1];
-			currentDesign = recentDesignAdded;
-		} else {
-			currentDesign = curDragElem;
-		}
+		let currentDesign = getCurrentDesign();
 		let increment = 15;
 		// update rotate value of current design
 		if (event.target.id == "rotate-left") {
@@ -249,6 +244,21 @@ export default function ScreenprintDesigner() {
 				}
 			}));
 		}
+	}
+
+	function deleteClickHandler(event) {
+		// skip if designs are empty
+		if (designRefs.current[0] === null) return;
+		let currentDesign = getCurrentDesign();
+		let currentDesignId = +currentDesign.id;
+		// remove current design
+		setDesigns(
+			designs.filter(design => design.id !== currentDesignId)
+		);
+		designRefs.current.pop();
+		// set current design to last design added
+		let lastDesign = designRefs.current[designRefs.current.length - 1];
+		setCurDragElem(lastDesign);
 	}
 
 	// =======================================
@@ -323,7 +333,7 @@ export default function ScreenprintDesigner() {
 								<div
 									className={`design-image-wrapper ${design.dragClass}`}
 									key={idx}
-									id={idx}
+									id={design.id}
 									draggable
 									ref={(el) => (designRefs.current[idx] = el)}
 									style={{left: design.posX, top: design.posY, width: design.width, zIndex: design.zIndex}}
@@ -331,7 +341,7 @@ export default function ScreenprintDesigner() {
 									<img
 										src={design.path}
 										alt=""
-										id={idx}
+										id={design.id}
 										className={`design-image design-${idx} ${design.dragClass}`}
 										draggable
 										onDragStart={event => dragStartHandler(event, false)}
@@ -413,7 +423,7 @@ export default function ScreenprintDesigner() {
 						</div>
 					</div>
 
-					<div className="option-section option-size-rotate">
+					<div className="option-section option-size-rotate-delete">
 						{/* Option - Size */}
 						<div className="sub-container">
 							<div className="option-size">
@@ -438,7 +448,7 @@ export default function ScreenprintDesigner() {
 									id="rotate-left"
 									className="option-button"
 									onClick={rotateClickHandler} >
-									<svg className="rotate-icon rotate-left" viewBox="0 0 500 500">
+									<svg className="rotate-icon rotate-left-icon" viewBox="0 0 500 500">
 										<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
 									</svg>
 								</button>
@@ -446,8 +456,22 @@ export default function ScreenprintDesigner() {
 									id="rotate-right"
 									className="option-button"
 									onClick={rotateClickHandler} >
-									<svg className="rotate-icon rotate-right" viewBox="0 0 500 500">
+									<svg className="rotate-icon rotate-right-icon" viewBox="0 0 500 500">
 										<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
+									</svg>
+								</button>
+							</div>
+						</div>
+						{/* Option - Delete */}
+						<div className="sub-container">
+							<div className="option-delete">
+								<label className="option-label hidden">Delete:</label>
+								<button
+									id="delete"
+									className="option-button"
+									onClick={deleteClickHandler} >
+									<svg className="delete-icon" viewBox="0 0 32 32">
+										<path d="M25 4h-18c-1.657 0-3 1.343-3 3v1h24v-1c0-1.657-1.343-3-3-3zM19.76 2l0.441 3.156h-8.402l0.441-3.156h7.52zM20 0h-8c-0.825 0-1.593 0.668-1.708 1.486l-0.585 4.185c-0.114 0.817 0.467 1.486 1.292 1.486h10c0.825 0 1.407-0.668 1.292-1.486l-0.585-4.185c-0.114-0.817-0.883-1.486-1.708-1.486v0zM25.5 10h-19c-1.1 0-1.918 0.896-1.819 1.992l1.638 18.016c0.1 1.095 1.081 1.992 2.181 1.992h15c1.1 0 2.081-0.896 2.181-1.992l1.638-18.016c0.1-1.095-0.719-1.992-1.819-1.992zM12 28h-3l-1-14h4v14zM18 28h-4v-14h4v14zM23 28h-3v-14h4l-1 14z" fill="#000000"></path>
 									</svg>
 								</button>
 							</div>

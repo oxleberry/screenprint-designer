@@ -204,14 +204,6 @@
 
 			input[type="color"] {
 				cursor: pointer;
-				width: 40px;
-				height: 40px;
-				margin-left: 14px;
-				margin-top: -8px;
-			}
-
-			input[type="color"] {
-				cursor: pointer;
 				width: 35px;
 				height: 40px;
 				border: 0 solid transparent;
@@ -257,12 +249,12 @@
 			}
 		}
 
-		// =========================
-		// Art Size & Rotate
-		// =========================
-		.option-size-rotate {
+		// ============================
+		// Art Size, Rotate & Delete
+		// ============================
+		.option-size-rotate-delete {
 			display: grid;
-			grid-template-columns: 1fr 1fr;
+			grid-template-columns: 1fr 1fr 1fr;
 			padding: 0;
 
 			.sub-container {
@@ -303,12 +295,23 @@
 			}
 
 			.option-size,
-			.option-rotate {
+			.option-rotate,
+			.option-delete {
 				display: flex;
 				padding: 18px 18px;
 			}
 
-			.rotate-icon {
+			.option-delete {
+				justify-content: center;
+				width: 100%;
+
+				.option-label {
+					display: none;
+				}
+			}
+
+			.rotate-icon,
+			.delete-icon {
 				display: block;
 				pointer-events: none;
 				width: 28px;
@@ -321,12 +324,18 @@
 				}
 			}
 
-			.rotate-left {
+			.rotate-left-icon {
 				transform: rotate(8deg);
 			}
 
-			.rotate-right {
+			.rotate-right-icon {
 				transform: rotate(-8deg) scaleX(-1);
+			}
+
+			.delete-icon {
+				width: 26px;
+				margin-left: auto;
+				margin-right: auto;
 			}
 		}
 	}
