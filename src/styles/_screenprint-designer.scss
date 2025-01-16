@@ -225,7 +225,35 @@
 			}
 		}
 
-		// Gallery
+		// Upload Image
+		.option-upload-image {
+			display: flex;
+
+			.option-label {
+				margin-right: 16px;
+				padding-bottom: 10px;
+			}
+
+			input::file-selector-button {
+				font-size: 15px;
+				text-transform: uppercase;
+				font-weight: bold;
+				color: var(--options-color);
+				background-color: #d7e0e8;
+				background-image: linear-gradient(#f1f5fb, #d7e0e8);
+				border: 1px solid var(--options-color-light);
+				border-radius: 2px;
+				padding: 4px 10px;
+				cursor: pointer;
+			}
+
+			input[type='file'] {
+				font-size: 17px;
+				color: var(--options-color);
+			}
+		}
+
+		// Image Gallery
 		.gallery-container {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);

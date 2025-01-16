@@ -146,8 +146,7 @@ export default function ScreenprintDesigner() {
 		setGarmentColor(value);
 	}
 
-	function galleryClickHandler(event) {
-		let imagePath = event.target.src;
+	function setNewDesign(image) {
 		let nextId = designIdx + 1;
 		let nextZIndex = designZIndex + 1;
 		setDesignIdx(nextId);
@@ -158,7 +157,7 @@ export default function ScreenprintDesigner() {
 				...designs,
 				{
 					id: nextId,
-					path: imagePath,
+					path: image,
 					posX: 175,
 					posY: 130,
 					width: 220,
@@ -170,6 +169,30 @@ export default function ScreenprintDesigner() {
 		);
 		// clear target element
 		setCurDragElem(null);
+	}
+
+	function uploadImageClickHandler(event) {
+		let imageFile;
+		let reader;
+		let uploadImage;
+		imageFile = event.target.files[0];
+		if(!imageFile.type.match('image.*')) {
+			alert("This file is not a unsupported image file");
+			return;
+		}
+		reader = new FileReader();
+		reader.addEventListener('load', (function() {
+			return function(event) {
+				uploadImage = event.target.result;
+				setNewDesign(uploadImage);
+			};
+		})(imageFile), false);
+		reader.readAsDataURL(imageFile);
+	}
+
+	function galleryClickHandler(event) {
+		let galleryImagePath = event.target.src;
+		setNewDesign(galleryImagePath);
 	}
 
 	function getDesignPosition(design) {
@@ -405,7 +428,18 @@ export default function ScreenprintDesigner() {
 						</div>
 					</div>
 
-					{/* Option Galley Image */}
+					{/* Option - Upload an Image */}
+					<div className="option-section option-upload-image">
+						<label htmlFor="upload-image" className="option-label">Upload an image:</label>
+						<input
+							id="upload-image"
+							onChange={uploadImageClickHandler}
+							type="file"
+							name="custom-image"
+							accept=".png, .jpg, .jpeg, .gif, .webp"/>
+					</div>
+
+					{/* Option - Image Gallery */}
 					<div className="option-section option-image">
 						<label className="option-label">Choose an image:</label>
 						<div className="gallery-container">
@@ -413,7 +447,7 @@ export default function ScreenprintDesigner() {
 								<button
 									key={idx}
 									type="button"
-									className="gallery-image-button button-black"
+									className="gallery-image-button"
 									onClick={galleryClickHandler}>
 									<img
 										className={`gallery-image gallery-image-${image.id}`}
