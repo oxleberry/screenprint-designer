@@ -191,7 +191,7 @@ export default function ScreenprintDesigner() {
 	}
 
 	function galleryClickHandler(event) {
-		let galleryImagePath = event.target.src;
+		let galleryImagePath = event.target.firstElementChild.src;
 		setNewDesign(galleryImagePath);
 	}
 
@@ -428,39 +428,44 @@ export default function ScreenprintDesigner() {
 						</div>
 					</div>
 
-					{/* Option - Upload an Image */}
-					<div className="option-section option-upload-image">
-						<label htmlFor="upload-image" className="option-label">Upload an image:</label>
-						<input
-							id="upload-image"
-							onChange={uploadImageClickHandler}
-							type="file"
-							name="custom-image"
-							accept=".png, .jpg, .jpeg, .gif, .webp"/>
-					</div>
-
-					{/* Option - Image Gallery */}
-					<div className="option-section option-image">
-						<label className="option-label">Choose an image:</label>
-						<div className="gallery-container">
-							{initialGalleryImageData.map((image, idx) =>
-								<button
-									key={idx}
-									type="button"
-									className="gallery-image-button"
-									onClick={galleryClickHandler}>
-									<img
-										className={`gallery-image gallery-image-${image.id}`}
-										src={image.url}/>
-								</button>
-							)}
+				<div className="option-section sub-section-container images-section">
+						{/* Option - Upload an Image */}
+						<div className="sub-divider">
+							<div className="option-sub-section option-upload-image">
+								<label htmlFor="upload-image" className="option-label">Upload your image:</label>
+								<input
+									id="upload-image"
+									onChange={uploadImageClickHandler}
+									type="file"
+									name="custom-image"
+									accept=".png, .jpg, .jpeg, .gif, .webp"/>
+							</div>
+						</div>
+						{/* Option - Image Gallery */}
+						<div className="sub-divider">
+							<div className="option-sub-section option-image-gallery">
+								<label className="option-label">Choose an image:</label>
+								<div className="gallery-container">
+									{initialGalleryImageData.map((image, idx) =>
+										<button
+											key={idx}
+											type="button"
+											className="gallery-image-button"
+											onClick={galleryClickHandler}>
+											<img
+												className={`gallery-image gallery-image-${image.id}`}
+												src={image.url}/>
+										</button>
+									)}
+								</div>
+							</div>
 						</div>
 					</div>
 
-					<div className="option-section option-size-rotate-delete">
+					<div className="option-section sub-section-container option-size-rotate-delete">
 						{/* Option - Size */}
-						<div className="sub-container">
-							<div className="option-size">
+						<div className="sub-divider">
+							<div className="option-sub-section option-size">
 								<label className="option-label">Art size:</label>
 								<button
 									id="minus"
@@ -475,8 +480,8 @@ export default function ScreenprintDesigner() {
 							</div>
 						</div>
 						{/* Option - Rotate */}
-						<div className="sub-container">
-							<div className="option-rotate">
+						<div className="sub-divider">
+							<div className="option-sub-section option-rotate">
 								<label className="option-label">Rotate art:</label>
 								<button
 									id="rotate-left"
@@ -497,9 +502,9 @@ export default function ScreenprintDesigner() {
 							</div>
 						</div>
 						{/* Option - Delete */}
-						<div className="sub-container">
-							<div className="option-delete">
-								<label className="option-label hidden">Delete:</label>
+						<div className="sub-divider">
+							<div className="option-sub-section option-delete">
+								<label className="option-label">Delete:</label>
 								<button
 									id="delete"
 									className="option-button"

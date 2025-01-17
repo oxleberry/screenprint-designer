@@ -95,6 +95,35 @@
 			}
 		}
 
+		// Options with Sub-sections
+		.sub-section-container {
+			padding: 0;
+
+			.sub-divider {
+				display: flex;
+
+				&:nth-child(n + 2) {
+					&::before {
+						content: '';
+						height: 100%;
+						width: 4px;
+						background-color: var(--options-color);
+					}
+				}
+			}
+
+			.option-sub-section {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				padding: 18px 18px;
+			}
+
+			.option-label {
+				padding-bottom: 14px;
+			}
+		}
+
 		.row {
 			display: flex;
 			padding-bottom: 10px;
@@ -107,7 +136,6 @@
 			font-size: 18px;
 			text-transform: uppercase;
 			color: var(--options-color);
-			padding-bottom: 14px;
 		}
 
 		// =========================
@@ -225,55 +253,59 @@
 			}
 		}
 
-		// Upload Image
-		.option-upload-image {
-			display: flex;
-
-			.option-label {
-				margin-right: 16px;
-				padding-bottom: 10px;
-			}
-
-			input::file-selector-button {
-				font-size: 15px;
-				text-transform: uppercase;
-				font-weight: bold;
-				color: var(--options-color);
-				background-color: #d7e0e8;
-				background-image: linear-gradient(#f1f5fb, #d7e0e8);
-				border: 1px solid var(--options-color-light);
-				border-radius: 2px;
-				padding: 4px 10px;
-				cursor: pointer;
-			}
-
-			input[type='file'] {
-				font-size: 17px;
-				color: var(--options-color);
-			}
-		}
-
-		// Image Gallery
-		.gallery-container {
+		// ===============================
+		// Upload Image & Image Gallery
+		// ===============================
+		.images-section {
 			display: grid;
-			grid-template-columns: repeat(3, 1fr);
-			gap: 12px;
+			grid-template-columns: auto auto;
 
-			.gallery-image-button {
-				border: none;
-				padding: 10px;
-				opacity: .7;
-				transition: opacity 200ms ease-in-out;
-				background-color: black;
-				cursor: pointer;
+			// Upload Image
+			.option-upload-image {
+				input::file-selector-button {
+					font-size: 16px;
+					font-weight: bold;
+					color: var(--options-color);
+					background-color: #d7e0e8;
+					background-image: linear-gradient(#f1f5fb, #d7e0e8);
+					border: 1px solid var(--options-color-light);
+					padding: 6px 14px;
+					margin: 2px;
+					cursor: pointer;
+				}
 
-				&:hover {
-					opacity: 1;
+				input[type='file'] {
+					font-size: 17px;
+					color: var(--options-color);
+					max-width: 250px;
 				}
 			}
 
-			.gallery-image {
-				width: 100%;
+			// Image Gallery
+			.option-image-gallery {
+				.gallery-container {
+					display: grid;
+					grid-template-columns: repeat(3, 1fr);
+					gap: 10px;
+
+					.gallery-image-button {
+						border: none;
+						padding: 10px;
+						opacity: .7;
+						transition: opacity 200ms ease-in-out;
+						background-color: black;
+						cursor: pointer;
+
+						&:hover {
+							opacity: 1;
+						}
+					}
+
+					.gallery-image {
+						width: 100%;
+						pointer-events: none;
+					}
+				}
 			}
 		}
 
@@ -283,19 +315,10 @@
 		.option-size-rotate-delete {
 			display: grid;
 			grid-template-columns: 1fr 1fr 1fr;
-			padding: 0;
 
-			.sub-container {
-				display: flex;
-
-				&:nth-child(n + 2) {
-					&::before {
-						content: '';
-						height: 100%;
-						width: 4px;
-						background-color: var(--options-color);
-					}
-				}
+			.option-sub-section {
+				justify-content: space-between;
+				flex-direction: row;
 			}
 
 			.option-label {
@@ -308,17 +331,19 @@
 				color: var(--options-color);
 				font-size: 26px;
 				font-weight: bold;
-				border-radius: 2px;
 				border: 1px solid #a8b6c5;
 				background-color: #d7e0e8;
 				background-image: linear-gradient(#f1f5fb, #d7e0e8);
 				padding-bottom: 7px;
-				margin: 0 6px;
 				transition: transform 200ms ease-in-out;
 
 				&:hover {
 					transform: scale(1.1);
 					transition: transform 200ms ease-in-out;
+				}
+
+				& + .option-button {
+					margin-left: 15px;
 				}
 			}
 
@@ -331,6 +356,7 @@
 
 			.option-delete {
 				justify-content: center;
+				align-items: center;
 				width: 100%;
 
 				.option-label {
