@@ -181,6 +181,7 @@ export default function ScreenprintDesigner() {
 			posY: number
 			width: number
 			rotate: number
+			filter: string
 			dragClass: string, ex: 'draggable', 'no-drag'
 			zIndex: number
 		}]
@@ -221,12 +222,21 @@ export default function ScreenprintDesigner() {
 					width: 220,
 					rotate: 0,
 					dragClass: 'draggable',
+					filter: 'normal',
 					zIndex: nextZIndex
 				}
 			]
 		);
 		// clear target element
 		setCurDragElem(null);
+		// reset filter buttons to default filter
+		setFilterButtons(filterButtons.map(filter => {
+			if (filter.value == 'normal') {
+				return { ...filter, isActive: true };
+			} else {
+				return { ...filter, isActive: false };
+			}
+		}));
 	}
 
 	function uploadImageClickHandler(event) {
@@ -340,11 +350,32 @@ export default function ScreenprintDesigner() {
 		// set current design to last design added
 		let lastDesign = designRefs.current[designRefs.current.length - 1];
 		setCurDragElem(lastDesign);
+		// remove all filters status
+		setFilterButtons(filterButtons.map(filter => {
+			return { ...filter, isActive: false };
+		}));
 	}
 
 	function filterClickHandler(event) {
-		console.log('event.target.id', event.target.id);
+		let currentDesign = getCurrentDesign();
+		// update filter style of current design
+		setDesigns(designs.map(design => {
+			if (design.id == currentDesign.id) {
+				return { ...design, filter: event.target.id };
+			} else {
+				return design;
+			}
+		}));
+		// update current filter button to be active
+		setFilterButtons(filterButtons.map(filter => {
+			if (filter.value == event.target.value) {
+				return { ...filter, isActive: true };
+			} else {
+				return { ...filter, isActive: false };
+			}
+		}));
 	}
+
 
 	// =======================================
 	// Draggable Image functions
@@ -357,6 +388,7 @@ export default function ScreenprintDesigner() {
 			x: event.clientX,
 			y: event.clientY
 		});
+		let designFilter;
 		let nextZIndex = designZIndex + 1;
 		setDesignZIndex(nextZIndex);
 		// set current design to top z-index
@@ -366,6 +398,14 @@ export default function ScreenprintDesigner() {
 				return { ...design, zIndex: nextZIndex }; // update current design
 			} else {
 				return { ...design, dragClass: 'no-drag' }; // update all other items
+			}
+		}));
+		// set filter buttons to filter type of current design
+		setFilterButtons(filterButtons.map(filter => {
+			if (filter.value == designFilter) {
+				return { ...filter, isActive: true };
+			} else {
+				return { ...filter, isActive: false };
 			}
 		}));
 	}
@@ -421,7 +461,7 @@ export default function ScreenprintDesigner() {
 									id={design.id}
 									draggable
 									ref={(el) => (designRefs.current[idx] = el)}
-									style={{left: design.posX, top: design.posY, width: design.width, zIndex: design.zIndex}}
+									style={{left: design.posX, top: design.posY, width: design.width, mixBlendMode: design.filter, zIndex: design.zIndex}}
 									>
 									<img
 										src={design.path}
