@@ -107,6 +107,63 @@ export default function ScreenprintDesigner() {
 		}
 	]
 
+	const initialFilterData = [
+		{
+			id: 1,
+			name: 'None',
+			value: 'normal',
+			isActive: true
+		},
+		{
+			id: 2,
+			name: 'Lighten',
+			value: 'lighten',
+			isActive: false
+		},
+		{
+			id: 3,
+			name: 'Darken',
+			value: 'darken',
+			isActive: false
+		},
+		{
+			id: 4,
+			name: 'Multiply',
+			value: 'multiply',
+			isActive: false
+		},
+		{
+			id: 5,
+			name: 'Screen',
+			value: 'screen',
+			isActive: false
+		},
+		{
+			id: 6,
+			name: 'Overlay',
+			value: 'overlay',
+			isActive: false
+		},
+		{
+			id: 7,
+			name: 'Hard Light',
+			value: 'hard-light',
+			isActive: false
+		},
+		{
+			id: 8,
+			name: 'Luminosity',
+			value: 'luminosity',
+			isActive: false
+		},
+		{
+			id: 9,
+			name: 'Color Burn',
+			value: 'color-burn',
+			isActive: false
+		}
+	]
+
 	// States =================
 	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
 	const [garmentColor, setGarmentColor] = useState('#1d1d1d');
@@ -114,6 +171,7 @@ export default function ScreenprintDesigner() {
 	const [curDragElem, setCurDragElem] = useState(null);
 	const [designIdx, setDesignIdx] = useState(-1);
 	const [designZIndex, setDesignZIndex] = useState(-1);
+	const [filterButtons, setFilterButtons] = useState(initialFilterData);
 	const [designs, setDesigns] = useState([]);
 	/* =========================
 		designs = [{
@@ -282,6 +340,10 @@ export default function ScreenprintDesigner() {
 		// set current design to last design added
 		let lastDesign = designRefs.current[designRefs.current.length - 1];
 		setCurDragElem(lastDesign);
+	}
+
+	function filterClickHandler(event) {
+		console.log('event.target.id', event.target.id);
 	}
 
 	// =======================================
@@ -514,6 +576,23 @@ export default function ScreenprintDesigner() {
 									</svg>
 								</button>
 							</div>
+						</div>
+					</div>
+
+					{/* Option - Filters */}
+					<div className="option-section option-filters">
+						<label className="option-label">Filters:</label>
+						<div className="option-filter-list">
+							{filterButtons.map((filter, idx) =>
+								<button
+									key={idx}
+									id={filter.value}
+									className={`option-button-filter${filter.isActive ? ' active' : ''}`}
+									value={filter.value}
+									onClick={filterClickHandler}>
+										{filter.name}
+								</button>
+							)}
 						</div>
 					</div>
 				</section>
