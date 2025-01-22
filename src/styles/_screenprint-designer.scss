@@ -260,6 +260,11 @@
 			display: grid;
 			grid-template-columns: auto auto;
 
+			.option-label {
+				margin-top: 8px;
+				margin-right: 12px;
+			}
+
 			// Upload Image
 			.option-upload-image {
 				input::file-selector-button {
@@ -272,6 +277,11 @@
 					padding: 6px 14px;
 					margin: 2px;
 					cursor: pointer;
+
+					&:hover {
+						box-shadow: 0 0 0 2px var(--options-color-light);
+						transition: all 200ms ease-out;
+					}
 				}
 
 				input[type='file'] {
@@ -335,11 +345,11 @@
 				background-color: #d7e0e8;
 				background-image: linear-gradient(#f1f5fb, #d7e0e8);
 				padding-bottom: 7px;
-				transition: transform 200ms ease-in-out;
+				transition: all 200ms ease-out;
 
 				&:hover {
-					transform: scale(1.1);
-					transition: transform 200ms ease-in-out;
+					box-shadow: 0 0 0 2px var(--options-color-light);
+					transition: all 200ms ease-out;
 				}
 
 				& + .option-button {
@@ -415,6 +425,10 @@
 				margin-right: 12px;
 				margin-bottom: 12px;
 				cursor: pointer;
+
+				&:hover {
+					box-shadow: 0 0 0 2px var(--options-color-light);
+				}
 			}
 
 			.active {
@@ -423,6 +437,11 @@
 				background-color: var(--options-color);
 				background-image: linear-gradient(var(--options-color), var(--options-color));
 				transition: all 200ms ease-out;
+
+				&:hover {
+					box-shadow: 0 0 0 2px transparent;
+					cursor: inherit;
+				}
 			}
 		}
 	}
