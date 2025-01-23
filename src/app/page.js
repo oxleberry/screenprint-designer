@@ -94,16 +94,19 @@ export default function ScreenprintDesigner() {
 			id: 1,
 			name: 'sakura-flower',
 			url: '/images/sakura-flower.png',
+			ariaLabel: 'flower design',
 		},
 		{
 			id: 2,
 			name: 'sugar-skull',
 			url: '/images/sugar-skull.png',
+			ariaLabel: 'sugar skull design',
 		},
 		{
 			id: 3,
 			name: 'flaming-bunny',
 			url: '/images/flaming-bunny.png',
+			ariaLabel: 'flaming bunny design',
 		}
 	]
 
@@ -453,27 +456,27 @@ export default function ScreenprintDesigner() {
 						style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
 					>
 						<h2 className="hidden">Design layout workspace</h2>
-						<img className="tee-image" src={`/images/${garmentStyle}.png`} />
+						<img className="tee-image" src={`/images/${garmentStyle}.png`} alt="screenprint designer workspace"/>
 						{designs.map((design, idx) =>
-								<div
-									className={`design-image-wrapper ${design.dragClass}`}
-									key={idx}
+							<div
+								className={`design-image-wrapper ${design.dragClass}`}
+								key={idx}
+								id={design.id}
+								draggable
+								ref={(el) => (designRefs.current[idx] = el)}
+								style={{left: design.posX, top: design.posY, width: design.width, mixBlendMode: design.filter, zIndex: design.zIndex}}
+								>
+								<img
+									src={design.path}
+									alt=""
 									id={design.id}
+									className={`design-image design-${idx} ${design.dragClass}`}
 									draggable
-									ref={(el) => (designRefs.current[idx] = el)}
-									style={{left: design.posX, top: design.posY, width: design.width, mixBlendMode: design.filter, zIndex: design.zIndex}}
-									>
-									<img
-										src={design.path}
-										alt=""
-										id={design.id}
-										className={`design-image design-${idx} ${design.dragClass}`}
-										draggable
-										onDragStart={event => dragStartHandler(event, false)}
-										style={{transform: `rotate(${design.rotate}deg)`, width: design.width}}
-									/>
-								</div>
-							)}
+									onDragStart={event => dragStartHandler(event, false)}
+									style={{transform: `rotate(${design.rotate}deg)`, width: design.width}}
+								/>
+							</div>
+						)}
 					</div>
 				</section>
 
@@ -553,7 +556,8 @@ export default function ScreenprintDesigner() {
 											key={idx}
 											type="button"
 											className="gallery-image-button"
-											onClick={galleryClickHandler}>
+											onClick={galleryClickHandler}
+											aria-label={image.ariaLabel}>
 											<img
 												className={`gallery-image gallery-image-${image.id}`}
 												src={image.url}/>
@@ -573,11 +577,13 @@ export default function ScreenprintDesigner() {
 									id="minus"
 									className="option-button"
 									onClick={sizeClickHandler}
+									aria-label="decrease art size"
 								>-</button>
 								<button
 									id="plus"
 									className="option-button"
 									onClick={sizeClickHandler}
+									aria-label="increase art size"
 								>+</button>
 							</div>
 						</div>
@@ -588,7 +594,8 @@ export default function ScreenprintDesigner() {
 								<button
 									id="rotate-left"
 									className="option-button"
-									onClick={rotateClickHandler} >
+									onClick={rotateClickHandler}
+									aria-label="rotate art left">
 									<svg className="rotate-icon rotate-left-icon" viewBox="0 0 500 500">
 										<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
 									</svg>
@@ -596,7 +603,8 @@ export default function ScreenprintDesigner() {
 								<button
 									id="rotate-right"
 									className="option-button"
-									onClick={rotateClickHandler} >
+									onClick={rotateClickHandler}
+									aria-label="rotate art right">
 									<svg className="rotate-icon rotate-right-icon" viewBox="0 0 500 500">
 										<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
 									</svg>
@@ -610,7 +618,8 @@ export default function ScreenprintDesigner() {
 								<button
 									id="delete"
 									className="option-button"
-									onClick={deleteClickHandler} >
+									onClick={deleteClickHandler}
+									aria-label="delete art">
 									<svg className="delete-icon" viewBox="0 0 32 32">
 										<path d="M25 4h-18c-1.657 0-3 1.343-3 3v1h24v-1c0-1.657-1.343-3-3-3zM19.76 2l0.441 3.156h-8.402l0.441-3.156h7.52zM20 0h-8c-0.825 0-1.593 0.668-1.708 1.486l-0.585 4.185c-0.114 0.817 0.467 1.486 1.292 1.486h10c0.825 0 1.407-0.668 1.292-1.486l-0.585-4.185c-0.114-0.817-0.883-1.486-1.708-1.486v0zM25.5 10h-19c-1.1 0-1.918 0.896-1.819 1.992l1.638 18.016c0.1 1.095 1.081 1.992 2.181 1.992h15c1.1 0 2.081-0.896 2.181-1.992l1.638-18.016c0.1-1.095-0.719-1.992-1.819-1.992zM12 28h-3l-1-14h4v14zM18 28h-4v-14h4v14zM23 28h-3v-14h4l-1 14z" fill="#000000"></path>
 									</svg>
