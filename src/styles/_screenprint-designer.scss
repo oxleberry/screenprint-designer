@@ -126,7 +126,7 @@
 
 		.row {
 			display: flex;
-			padding-bottom: 10px;
+			justify-content: center;
 		}
 
 		.option-label {
@@ -319,12 +319,12 @@
 			}
 		}
 
-		// ============================
-		// Art Size, Rotate & Delete
-		// ============================
-		.option-size-rotate-delete {
+		// =============================================
+		// Art Size, Rotate, Border Radius, & Delete
+		// =============================================
+		.art-manipulation-section {
 			display: grid;
-			grid-template-columns: 1fr 1fr 1fr;
+			grid-template-columns: 1fr 1fr 1fr .7fr;
 
 			.option-sub-section {
 				justify-content: space-between;
@@ -332,7 +332,20 @@
 			}
 
 			.option-label {
-				margin-right: 10px;
+				margin-right: 12px;
+			}
+
+			.sub-divider {
+				display: flex;
+
+				&:nth-child(n + 2) {
+					&::before {
+						content: '';
+						height: 100%;
+						width: 4px;
+						background-color: var(--options-color);
+					}
+				}
 			}
 
 			.option-button {
@@ -347,41 +360,60 @@
 				padding-bottom: 7px;
 				transition: all 200ms ease-out;
 
+				& + .option-button {
+					margin-left: 15px;
+				}
+
 				&:hover {
 					box-shadow: 0 0 0 2px var(--options-color-light);
 					transition: all 200ms ease-out;
 				}
+			}
 
-				& + .option-button {
-					margin-left: 15px;
+			.option-button:has(.rotate-icon),
+			.option-button:has(.delete-icon) {
+				width: 42px;
+				padding: 2px 0 7px;
+			}
+
+			@media (orientation: portrait) {
+				.option-button:has(.minus-icon) {
+					padding: 2px 5px 5px 5px;
+				}
+
+				.option-button:has(.plus-icon) {
+					padding: 2px 5px 5px 11px;
 				}
 			}
 
-			.option-size,
-			.option-rotate,
-			.option-delete {
-				display: flex;
-				padding: 18px 18px;
+			.minus-icon {
+				pointer-events: none;
+				padding: 0 9px 0;
 			}
 
-			.option-delete {
-				justify-content: center;
-				align-items: center;
-				width: 100%;
+			.plus-icon {
+				display: block;
+				pointer-events: none;
+				margin-top: 4px;
+				padding: 0 6px 0;
+			}
 
-				.option-label {
-					display: none;
-				}
+			.option-delete .option-button {
+				align-self: center;
+			}
+
+			.rotate-icon {
+				height: 24px;
+				padding: 0 6px;
 			}
 
 			.rotate-icon,
 			.delete-icon {
-				display: block;
-				pointer-events: none;
-				width: 28px;
 				margin-top: 6px;
+				display: block;
 				margin-left: auto;
 				margin-right: auto;
+				pointer-events: none;
 
 				path {
 					fill: var(--options-color);
@@ -398,8 +430,6 @@
 
 			.delete-icon {
 				width: 26px;
-				margin-left: auto;
-				margin-right: auto;
 			}
 		}
 
