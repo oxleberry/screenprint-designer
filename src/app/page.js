@@ -184,6 +184,7 @@ export default function ScreenprintDesigner() {
 			posY: number
 			width: number
 			rotate: number
+			borderRadius: number
 			filter: string
 			dragClass: string, ex: 'draggable', 'no-drag'
 			zIndex: number
@@ -224,8 +225,9 @@ export default function ScreenprintDesigner() {
 					posY: 130,
 					width: 220,
 					rotate: 0,
-					dragClass: 'draggable',
+					borderRadius: 0,
 					filter: 'normal',
+					dragClass: 'draggable',
 					zIndex: nextZIndex
 				}
 			]
@@ -341,7 +343,34 @@ export default function ScreenprintDesigner() {
 	}
 
 	function roundedCornersClickHandler(event) {
-		console.log("Rounded Corners")
+		let currentDesign = getCurrentDesign();
+		let increment = 20;
+		let updateBorderRadius;
+		// update rounded corners value of current design
+		if (event.target.id == "decrease") {
+			setDesigns(designs.map(design => {
+				if (design.id == currentDesign.id) {
+					// if border radius is at zero, no need to decrease further
+					if (design.borderRadius == 0) {
+						return design;
+					} else {
+						updateBorderRadius = design.borderRadius - increment;
+						return { ...design, borderRadius: updateBorderRadius };
+					}
+				} else {
+					return design;
+				}
+			}));
+		} else if (event.target.id == "increase") {
+			setDesigns(designs.map(design => {
+				if (design.id == currentDesign.id) {
+					updateBorderRadius = design.borderRadius + increment;
+					return { ...design, borderRadius: updateBorderRadius };
+				} else {
+					return design;
+				}
+			}));
+		}
 	}
 
 	function deleteClickHandler(event) {
@@ -477,7 +506,11 @@ export default function ScreenprintDesigner() {
 									className={`design-image design-${idx} ${design.dragClass}`}
 									draggable
 									onDragStart={event => dragStartHandler(event, false)}
-									style={{transform: `rotate(${design.rotate}deg)`, width: design.width}}
+									style={{
+										transform: `rotate(${design.rotate}deg)`,
+										width: design.width,
+										borderRadius: `${design.borderRadius}px`
+									}}
 								/>
 							</div>
 						)}
