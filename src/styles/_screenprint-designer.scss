@@ -474,5 +474,30 @@
 				}
 			}
 		}
+
+		// =====================
+		// Share Card Button
+		// =====================
+		.option-share {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.share-button {
+			font-weight: 800;
+			font-size: 18px;
+			text-transform: uppercase;
+			color: var(--options-color);
+			padding: 10px 16px;
+			border: 1px solid #a8b6c5;
+			background-color: #d7e0e8;
+			background-image: linear-gradient(#f1f5fb, #d7e0e8);
+
+			&:hover {
+				box-shadow: 0 0 0 2px var(--options-color-light);
+				transition: all 200ms ease-out;
+			}
+		}
 	}
 }
