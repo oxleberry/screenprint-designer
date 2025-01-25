@@ -197,6 +197,7 @@ export default function ScreenprintDesigner() {
 	// Elements
 	const dragContainerRef = useRef(null);
 	let designRefs = useRef([null]);
+	const shareFileRef = useRef(null);
 
 	// Functions =================
 	function garmentStyleHandler(event) {
@@ -477,8 +478,21 @@ export default function ScreenprintDesigner() {
 	// =======================================
 	// Share Card functions
 	// =======================================
+	function createCanvas() {
+		const canvas = document.createElement('canvas');
+		canvas.width = 584;
+		canvas.height = 682;
+		const context = canvas.getContext('2d');
+		context.save(); // Save the current state
+		context.fillStyle = garmentColor;
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.restore(); // Restore to the state saved by the most recent call to save()
+		shareFileRef.current.prepend(canvas); // display canvas for testing
+		return canvas;
+	}
+
 	function shareCardClickHandler() {
-		console.log('SHARE CARD');
+		const canvas = createCanvas();
 	}
 
 	return (
@@ -719,6 +733,13 @@ export default function ScreenprintDesigner() {
 						</button>
 					</div>
 				</section>
+
+				{/* For testing purposes to display Share Card canvas */}
+				<section
+					id="canvas-container"
+					className="canvas-container"
+					ref={shareFileRef}
+				></section>
 
 			</main>
 		</div>
