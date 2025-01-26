@@ -365,8 +365,13 @@ export default function ScreenprintDesigner() {
 		} else if (event.target.id == "increase") {
 			setDesigns(designs.map(design => {
 				if (design.id == currentDesign.id) {
-					updateBorderRadius = design.borderRadius + increment;
-					return { ...design, borderRadius: updateBorderRadius };
+					// cap the border radius to half the image width, , no need to increase further
+					if (design.borderRadius > design.width / 2) {
+						return design;
+					} else {
+						updateBorderRadius = design.borderRadius + increment;
+						return { ...design, borderRadius: updateBorderRadius };
+					}
 				} else {
 					return design;
 				}
@@ -508,6 +513,7 @@ export default function ScreenprintDesigner() {
 			const context = canvas.getContext('2d');
 			context.save();
 			rotateDesign(context, design, imageWidth, imageHeight);
+			drawRoundedCorners(context, design, imageWidth, imageHeight);
 			context.drawImage(image, design.posX, design.posY, imageWidth, imageHeight);
 			context.restore();
 		}))
@@ -519,6 +525,27 @@ export default function ScreenprintDesigner() {
 		context.translate(centerX, centerY);
 		context.rotate((design.rotate * Math.PI) / 180);
 		context.translate(-centerX, -centerY);
+	}
+
+	function drawRoundedCorners(context, design, imageWidth, imageHeight) {
+		const left = design.posX;
+		const top = design.posY;
+		const width = imageWidth + left;
+		const height = imageHeight + top;
+		let cornerRadius = design.borderRadius;
+		// cap the rounded corner to half the image width or height (whichever is smaller)
+		if (cornerRadius > imageWidth / 2 || cornerRadius > imageHeight / 2) {
+			let maxBorderRadius = Math.min(imageWidth / 2, imageHeight / 2);
+			cornerRadius = maxBorderRadius;
+		}
+		context.beginPath();
+		context.moveTo(cornerRadius, top);
+		context.arcTo(width, top, width, height, cornerRadius);
+		context.arcTo(width, height, left, height, cornerRadius);
+		context.arcTo(left, height, left, top, cornerRadius);
+		context.arcTo(left, top, width, top, cornerRadius);
+		context.closePath();
+		context.clip();
 	}
 
 	function shareCardClickHandler() {
