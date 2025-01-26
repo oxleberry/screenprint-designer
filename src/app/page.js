@@ -506,8 +506,19 @@ export default function ScreenprintDesigner() {
 			const imageHeight = designElement.getBoundingClientRect().height;
 			const design = designs[idx];
 			const context = canvas.getContext('2d');
+			context.save();
+			rotateDesign(context, design, imageWidth, imageHeight);
 			context.drawImage(image, design.posX, design.posY, imageWidth, imageHeight);
+			context.restore();
 		}))
+	}
+
+	function rotateDesign(context, design, imageWidth, imageHeight) {
+		const centerX = (imageWidth / 2) + design.posX;
+		const centerY = (imageHeight / 2) + design.posY;
+		context.translate(centerX, centerY);
+		context.rotate((design.rotate * Math.PI) / 180);
+		context.translate(-centerX, -centerY);
 	}
 
 	function shareCardClickHandler() {
