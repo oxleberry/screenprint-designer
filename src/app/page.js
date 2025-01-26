@@ -499,11 +499,25 @@ export default function ScreenprintDesigner() {
 		context.drawImage(tee, 0, 0, teeWidth, teeHeight);
 	}
 
+	function drawDesignsToCanvas(canvas) {
+		designRefs.current.map(((designElement, idx) => {
+			const image = designElement.firstElementChild;
+			const imageWidth = designElement.getBoundingClientRect().width;
+			const imageHeight = designElement.getBoundingClientRect().height;
+			const design = designs[idx];
+			const context = canvas.getContext('2d');
+			context.drawImage(image, design.posX, design.posY, imageWidth, imageHeight);
+		}))
+	}
+
 	function shareCardClickHandler() {
 		const canvasWidth = 584;
 		const canvasHeight = 682;
 		const canvas = createCanvas(canvasWidth, canvasHeight);
 		drawGarmentToCanvas(canvas);
+		if (designRefs.current[0] !== null) {
+			drawDesignsToCanvas(canvas);
+		};
 	}
 
 	return (
