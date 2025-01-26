@@ -478,21 +478,32 @@ export default function ScreenprintDesigner() {
 	// =======================================
 	// Share Card functions
 	// =======================================
-	function createCanvas() {
+	function createCanvas(width, height) {
 		const canvas = document.createElement('canvas');
-		canvas.width = 584;
-		canvas.height = 682;
+		canvas.width = width;
+		canvas.height = height;
 		const context = canvas.getContext('2d');
 		context.save(); // Save the current state
 		context.fillStyle = garmentColor;
-		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.fillRect(0, 0, width, height);
 		context.restore(); // Restore to the state saved by the most recent call to save()
-		shareFileRef.current.prepend(canvas); // display canvas for testing
+		shareFileRef.current.prepend(canvas);
 		return canvas;
 	}
 
+	function drawGarmentToCanvas(canvas) {
+		const tee = document.querySelector(".tee-image");
+		const teeWidth = tee.getBoundingClientRect().width;
+		const teeHeight = tee.getBoundingClientRect().height;
+		const context = canvas.getContext('2d');
+		context.drawImage(tee, 0, 0, teeWidth, teeHeight);
+	}
+
 	function shareCardClickHandler() {
-		const canvas = createCanvas();
+		const canvasWidth = 584;
+		const canvasHeight = 682;
+		const canvas = createCanvas(canvasWidth, canvasHeight);
+		drawGarmentToCanvas(canvas);
 	}
 
 	return (
