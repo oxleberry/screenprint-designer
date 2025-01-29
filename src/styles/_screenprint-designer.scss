@@ -4,10 +4,10 @@
 	/* Variables */
 	--options-color: #34485f;
 	--options-color-light: #9daec1;
-	--footer-height: 110px;
-	--nav-height: 58px;
-	--header-height: 110px;
-	--not-main-height: calc(var(--footer-height) + var(--nav-height) + var(--header-height));
+	$breakpoint-width-large-med: 1200px;
+	$design-layout-width-large: 600px;
+	$design-layout-width-med: 400px;
+	$design-layout-width-small: 400px;
 
 	h1 {
 		text-align: center;
@@ -19,18 +19,17 @@
 	main {
 		display: grid;
 		justify-content: center;
-		align-items: center;
-		min-height: calc(100vh - var(--not-main-height));
-		grid-template-columns: 600px 1fr;
-		gap: 48px;
+		grid-template-columns: $design-layout-width-large 1fr;
+		gap: 2.2em;
 		max-width: 1400px;
 		margin: 0 auto;
-		padding: 0 20px 50px;
+		padding: 0 20px;
 
-		@media only screen and (max-width: 680px) {
-			height: auto;
-			grid-template-columns: 350px;
-			padding: 0 50px 50px;
+		@media (orientation: portrait) {
+			gap: 24px;
+			grid-template-columns: 1fr;
+			max-height: 100vh;
+			overflow-y: scroll;
 		}
 	}
 
@@ -44,10 +43,49 @@
 	.design-layout-section {
 		display: flex;
 		flex-direction: column;
+		z-index: 100;
+		// adding border here to prevent border seen in canvas
+		border: 8px solid var(--options-color);
+
+		@media (orientation: portrait) {
+			margin: 0 auto;
+			border: 6px solid var(--options-color);
+			position: sticky;
+			width: $design-layout-width-med;
+			top: 0;
+
+			@media (max-width: 500px) {
+				width: $design-layout-width-small;
+			}
+
+			// adding scrim to prevent options section
+			// from being seen with sticky scroll
+			&::before {
+				content: '';
+				width: 100%;
+				height: 10px;
+				position: absolute;
+				top: -32px;
+				left: -8px;
+				background-color: white;
+				border: 8px solid white;
+			}
+
+			&::after {
+				content: '';
+				width: calc(100% + 12px);
+				height: 24px;
+				position: absolute;
+				bottom: -36px;
+				left: -6px;
+				background-color: white;
+				border-bottom: 6px solid var(--options-color);
+			}
+		}
 
 		.design-layout-container {
 			position: relative;
-			border: 8px solid var(--options-color);
+			height: auto;
 			overflow: hidden;
 		}
 
@@ -86,6 +124,16 @@
 		display: grid;
 		height: 100%;
 
+		@media (orientation: portrait) {
+			border: 6px solid var(--options-color);
+			margin: 0 auto;
+			width: $design-layout-width-med;
+
+			@media (max-width: 1250px) {
+				width: $design-layout-width-small;
+			}
+		}
+
 		.option-section {
 			border-bottom: 4px solid var(--options-color);
 			padding: 18px 18px 18px;
@@ -102,12 +150,22 @@
 			.sub-divider {
 				display: flex;
 
-				&:nth-child(n + 2) {
-					&::before {
-						content: '';
-						height: 100%;
-						width: 4px;
-						background-color: var(--options-color);
+				@media (orientation: landscape) {
+					// adding vertical lines in-between sections
+					&:nth-child(n + 2) {
+						&::before {
+							content: '';
+							height: 100%;
+							width: 4px;
+							background-color: var(--options-color);
+						}
+					}
+				}
+
+				@media (orientation: portrait) {
+					// adding horizontal lines in-between sections
+					&:not(:nth-last-child(1)) {
+						border-bottom: 4px solid var(--options-color);
 					}
 				}
 			}
@@ -143,8 +201,22 @@
 		// =========================
 		.option-garment-style {
 			display: grid;
-			grid-template-columns: repeat(4, 1fr);
+			grid-template-columns: 1fr repeat(3, .6fr);
 			gap: 20px;
+
+			@media (orientation: portrait) {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				row-gap: 4px;
+				column-gap: 20px;
+			}
+
+			.option-label {
+				@media (orientation: portrait) {
+					width: 100%;
+				}
+			}
 
 			.option-garment {
 				text-align: center;
@@ -205,6 +277,11 @@
 
 			.option-label {
 				margin-right: 4px;
+
+				@media (orientation: portrait) {
+					margin-bottom: 4px;
+					width: 100%;
+				}
 			}
 
 			.option-color {
@@ -238,6 +315,11 @@
 				background-color: transparent;
 				margin-top: -3px;
 				color: transparent;
+
+				@media (orientation: portrait) {
+					width: 38px;
+					height: 38px;
+				}
 			}
 
 			input[type="color"]::-webkit-color-swatch {
@@ -260,9 +342,8 @@
 			display: grid;
 			grid-template-columns: auto auto;
 
-			.option-label {
-				margin-top: 8px;
-				margin-right: 12px;
+			@media (orientation: portrait) {
+				grid-template-columns: 1fr;
 			}
 
 			// Upload Image
@@ -326,43 +407,51 @@
 			display: grid;
 			grid-template-columns: 1fr 1fr 1fr .7fr;
 
-			.option-sub-section {
-				justify-content: space-between;
-				flex-direction: row;
+			@media (max-width: $breakpoint-width-large-med) {
+				grid-template-columns: 1fr 1fr;
 			}
 
-			.option-label {
-				margin-right: 12px;
+			@media (orientation: portrait) {
+				grid-template-columns: 1fr;
+			}
+
+			.option-sub-section {
+				justify-content: space-between;
 			}
 
 			.sub-divider {
-				display: flex;
+				@media (max-width: $breakpoint-width-large-med) {
+					// adding horizontal lines in-between sections
+					&:not(:nth-child(n + 3)) {
+						border-bottom: 4px solid var(--options-color);
+					}
+				}
 
-				&:nth-child(n + 2) {
-					&::before {
-						content: '';
-						height: 100%;
-						width: 4px;
-						background-color: var(--options-color);
+				@media (max-width: $breakpoint-width-large-med) {
+					// hide vertical on 3rd container
+					&:nth-child(n + 3):nth-child(-n + 3) {
+						&::before {
+							background-color: transparent;
+						}
 					}
 				}
 			}
 
 			.option-button {
 				cursor: pointer;
-				width: 42px;
 				color: var(--options-color);
 				font-size: 26px;
 				font-weight: bold;
 				border: 1px solid #a8b6c5;
 				background-color: #d7e0e8;
 				background-image: linear-gradient(#f1f5fb, #d7e0e8);
-				padding-bottom: 7px;
+				padding-bottom: 5px;
 				transition: all 200ms ease-out;
 
 				& + .option-button {
 					margin-left: 15px;
 				}
+
 
 				&:hover {
 					box-shadow: 0 0 0 2px var(--options-color-light);
@@ -396,6 +485,11 @@
 				pointer-events: none;
 				margin-top: 4px;
 				padding: 0 6px 0;
+
+				@media (orientation: portrait) {
+					padding-left: 0;
+					margin: 0;
+				}
 			}
 
 			.option-delete .option-button {
@@ -404,7 +498,6 @@
 
 			.rotate-icon {
 				height: 24px;
-				padding: 0 6px;
 			}
 
 			.rotate-icon,
@@ -442,6 +535,10 @@
 			gap: 14px;
 			padding-bottom: 6px;
 
+			@media (orientation: portrait) {
+				grid-template-columns: 1fr;
+			}
+
 			.option-button-filter {
 				display: inline-block;
 				font-size: 16px;
@@ -458,6 +555,11 @@
 
 				&:hover {
 					box-shadow: 0 0 0 2px var(--options-color-light);
+				}
+
+				@media (orientation: portrait) {
+					margin-right: 10px;
+					margin-bottom: 10px;
 				}
 			}
 

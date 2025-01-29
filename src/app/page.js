@@ -707,42 +707,48 @@ export default function ScreenprintDesigner() {
 						<div className="sub-divider">
 							<div className="option-sub-section option-size">
 								<label className="option-label">Art size:</label>
-								<button
-									id="minus"
-									className="option-button"
-									onClick={sizeClickHandler}
-									aria-label="decrease art size"
-								><span className="minus-icon">-</span></button>
-								<button
-									id="plus"
-									className="option-button"
-									onClick={sizeClickHandler}
-									aria-label="increase art size"
-								><span className="plus-icon">+</span></button>
+								<div className="row">
+									<button
+										id="minus"
+										className="option-button"
+										onClick={sizeClickHandler}
+										aria-label="decrease art size">
+										<span className="minus-icon">-</span>
+									</button>
+									<button
+										id="plus"
+										className="option-button"
+										onClick={sizeClickHandler}
+										aria-label="increase art size">
+										<span className="plus-icon">+</span>
+									</button>
+								</div>
 							</div>
 						</div>
 						{/* Option - Rotate */}
 						<div className="sub-divider">
 							<div className="option-sub-section option-rotate">
 								<label className="option-label">Rotate art:</label>
-								<button
-									id="rotate-left"
-									className="option-button"
-									onClick={rotateClickHandler}
-									aria-label="rotate art left">
-									<svg className="rotate-icon rotate-left-icon" viewBox="0 0 500 500">
-										<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
-									</svg>
-								</button>
-								<button
-									id="rotate-right"
-									className="option-button"
-									onClick={rotateClickHandler}
-									aria-label="rotate art right">
-									<svg className="rotate-icon rotate-right-icon" viewBox="0 0 500 500">
-										<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
-									</svg>
-								</button>
+								<div className="row">
+									<button
+										id="rotate-left"
+										className="option-button"
+										onClick={rotateClickHandler}
+										aria-label="rotate art left">
+										<svg className="rotate-icon rotate-left-icon" viewBox="0 0 500 500">
+											<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
+										</svg>
+									</button>
+									<button
+										id="rotate-right"
+										className="option-button"
+										onClick={rotateClickHandler}
+										aria-label="rotate art right">
+										<svg className="rotate-icon rotate-right-icon" viewBox="0 0 500 500">
+											<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
+										</svg>
+									</button>
+								</div>
 							</div>
 						</div>
 						{/* Option - Rounded Corners */}
