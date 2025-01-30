@@ -589,10 +589,10 @@ export default function ScreenprintDesigner() {
 		const canvasWidth = 584;
 		const canvasHeight = 682;
 		const canvas = createCanvas(canvasWidth, canvasHeight);
-		drawGarmentToCanvas(canvas);
 		if (designRefs.current[0] !== null) {
 			drawDesignsToCanvas(canvas);
 		};
+		drawGarmentToCanvas(canvas);
 		shareFile(canvas);
 	}
 
