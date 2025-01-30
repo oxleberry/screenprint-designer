@@ -560,6 +560,31 @@ export default function ScreenprintDesigner() {
 		context.clip();
 	}
 
+	function shareFile(canvas) {
+		// canvasToPng
+		const dataUrl = canvas.toDataURL();
+		fetch(dataUrl)
+			.then(res => res.blob())
+			.then(blob => {
+				const fileName = `oxleberry-screenprint-design-${new Date().getTime()}.png`
+				const file = new File([blob], fileName, {
+					type: blob.type,
+					lastModified: new Date().getTime()
+				});
+				// shareFile
+				const files = [file];
+				const data = { files };
+				if (navigator.canShare && navigator.canShare({ files })) {
+					return navigator.share(data);
+				} else {
+					console.warn('Sharing failed.');
+				}
+			})
+			.catch(() => {
+				console.warn('Canvas to Png failed.');
+			})
+	}
+
 	function shareCardClickHandler() {
 		const canvasWidth = 584;
 		const canvasHeight = 682;
@@ -568,6 +593,7 @@ export default function ScreenprintDesigner() {
 		if (designRefs.current[0] !== null) {
 			drawDesignsToCanvas(canvas);
 		};
+		shareFile(canvas);
 	}
 
 
@@ -615,6 +641,7 @@ export default function ScreenprintDesigner() {
 										width: design.width,
 										borderRadius: `${design.borderRadius}px`
 									}}
+									crossOrigin='anonymous'
 								/>
 							</div>
 						)}
