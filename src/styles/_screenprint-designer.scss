@@ -7,7 +7,7 @@
 	$breakpoint-width-large-med: 1200px;
 	$design-layout-width-large: 600px;
 	$design-layout-width-med: 400px;
-	$design-layout-width-small: 400px;
+	$design-layout-width-small: 300px;
 
 	h1 {
 		text-align: center;
@@ -25,11 +25,16 @@
 		margin: 0 auto;
 		padding: 0 20px;
 
+		@media (max-width: $breakpoint-width-large-med) {
+			grid-template-columns: $design-layout-width-med 1fr;
+			gap: 1em;
+			height: calc(100vh - var(--not-main-height));
+		}
+
 		@media (orientation: portrait) {
-			gap: 24px;
 			grid-template-columns: 1fr;
-			max-height: 100vh;
-			overflow-y: scroll;
+			gap: 24px;
+			height: auto;
 		}
 	}
 
@@ -129,7 +134,7 @@
 			margin: 0 auto;
 			width: $design-layout-width-med;
 
-			@media (max-width: 1250px) {
+			@media (max-width: 500px) {
 				width: $design-layout-width-small;
 			}
 		}
