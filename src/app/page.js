@@ -471,6 +471,17 @@ export default function ScreenprintDesigner() {
 		curDragElem.style.top = currentDesign.posY + distanceY + 'px';
 	}
 
+	function touchMoveHandler(event) {
+		if (event.target == null) return;
+		event.preventDefault();
+		let currentDesign = designs.find(design => design.id == event.target.id);
+		if (currentDesign == undefined) return;
+		// calculate new position
+		const touchLocation = event.targetTouches[0];
+		curDragElem.style.left = (touchLocation.clientX - 100) + 'px';
+		curDragElem.style.top = (touchLocation.clientY - 150) + 'px';
+	}
+
 	function dragDropHandler(event) {
 		if (event.target == null) return;
 		event.preventDefault();
@@ -616,6 +627,8 @@ export default function ScreenprintDesigner() {
 						ref={dragContainerRef}
 						onDragOver={event => dragOverHandler(event, false)}
 						onDrop={event => dragDropHandler(event, false)}
+						onTouchMove={event => touchMoveHandler(event, false)}
+						onTouchEnd={event => dragDropHandler(event, false)}
 						style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
 					>
 						<h2 className="hidden">Design layout workspace</h2>
@@ -636,6 +649,7 @@ export default function ScreenprintDesigner() {
 									className={`design-image design-${idx} ${design.dragClass}`}
 									draggable
 									onDragStart={event => dragStartHandler(event, false)}
+									onTouchStart={event => dragStartHandler(event, false)}
 									style={{
 										transform: `rotate(${design.rotate}deg)`,
 										width: design.width,
