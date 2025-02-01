@@ -544,7 +544,7 @@ export default function ScreenprintDesigner() {
 		context.fillStyle = garmentColor;
 		context.fillRect(0, 0, canvasSize.width, canvasSize.height);
 		context.restore(); // Restore to the state saved by the most recent call to save()
-		shareFileRef.current.prepend(canvas); // display canvas for testing
+		// shareFileRef.current.prepend(canvas); // display canvas for testing
 		return canvas;
 	}
 
