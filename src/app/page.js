@@ -215,9 +215,10 @@ export default function ScreenprintDesigner() {
 
 	function setDefaultDesignSizeAndPosition() {
 		const viewportWidth = window.innerWidth;
-		if (viewportWidth >= 1200) {
+		const viewportHeight = window.innerHeight;
+		if (viewportWidth >= 1200 && viewportHeight >= 900) {
 			setDefaultDesignSpecs({ posX: 175, posY: 130, width: 220 });
-		} else if (viewportWidth >= 680) {
+		} else if (viewportWidth >= 680 && viewportHeight >= 700) {
 			setDefaultDesignSpecs({ posX: 120, posY: 95, width: 140});
 		} else {
 			setDefaultDesignSpecs({ posX: 95, posY: 70, width: 90});

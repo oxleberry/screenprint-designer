@@ -8,6 +8,12 @@
 	$design-layout-width-large: 600px;
 	$design-layout-width-med: 400px;
 	$design-layout-width-small: 300px;
+	$breakpoint-height-med: 900px;
+	$breakpoint-height-short: 700px;
+
+	@media (orientation: portrait) {
+		height: 100vh;
+	}
 
 	h1 {
 		text-align: center;
@@ -31,10 +37,21 @@
 			height: calc(100vh - var(--not-main-height));
 		}
 
+		@media (max-height: $breakpoint-height-short) {
+			grid-template-columns: $design-layout-width-small max(400px, 700px);
+			height: 394px;
+		}
+
+		@media (min-height: $breakpoint-height-short) and (max-height: $breakpoint-height-med) {
+			grid-template-columns: $design-layout-width-med max(400px, 700px);
+			height: 516px;
+		}
+
 		@media (orientation: portrait) {
 			grid-template-columns: 1fr;
 			gap: 24px;
 			height: auto;
+			// height: 100vh;
 		}
 	}
 
@@ -127,12 +144,24 @@
 	.options-container {
 		border: 8px solid var(--options-color);
 		display: grid;
-		height: 100%;
+		background-color: white;
+
+		@media (max-width: $breakpoint-width-large-med) {
+			overflow-y: scroll;
+			overflow-x: hidden;
+		}
+
+		@media (max-height: $breakpoint-height-med) {
+			overflow-y: scroll;
+			overflow-x: hidden;
+		}
 
 		@media (orientation: portrait) {
 			border: 6px solid var(--options-color);
 			margin: 0 auto;
 			width: $design-layout-width-med;
+			overflow-y: visible;
+			overflow-x: visible;
 
 			@media (max-width: 500px) {
 				width: $design-layout-width-small;
