@@ -177,6 +177,7 @@ export default function ScreenprintDesigner() {
 	const [designZIndex, setDesignZIndex] = useState(-1);
 	const [filterButtons, setFilterButtons] = useState(initialFilterData);
 	const [isChromeBrowser, setIsChromeBrowser] = useState(false);
+	const [canvasSize, setCanvasSize] = useState({});
 	const [defaultDesignSpecs, setDefaultDesignSpecs] = useState({});
 	const [designs, setDesigns] = useState([]);
 	/* =========================
@@ -213,16 +214,38 @@ export default function ScreenprintDesigner() {
 		setGarmentColor(value);
 	}
 
+	function getDefaultSpecs(viewportSize) {
+		// scales designs consistently based on viewport size
+		const posXScale = .305;
+		const posYScale = .25;
+		const widthScale = .33;
+		const posX = viewportSize * posXScale;
+		const posY = viewportSize * posYScale;
+		const width = viewportSize * widthScale;
+		const defaultSpecs = { posX: posX, posY: posY, width: width };
+		return defaultSpecs;
+	}
+
 	function setDefaultDesignSizeAndPosition() {
 		const viewportWidth = window.innerWidth;
 		const viewportHeight = window.innerHeight;
+		const designLayoutWidthLarge = 600;
+		const designLayoutWidthMedium = 400;
+		const designLayoutWidthSmall = 300;
+		let tempDefaultDesignSpecs;
+		let tempCanvasSize;
 		if (viewportWidth >= 1200 && viewportHeight >= 900) {
-			setDefaultDesignSpecs({ posX: 175, posY: 130, width: 220 });
+			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthLarge);
+			tempCanvasSize = { width: 584, height: 682 } // set canvas size to match design layout
 		} else if (viewportWidth >= 680 && viewportHeight >= 700) {
-			setDefaultDesignSpecs({ posX: 120, posY: 95, width: 140});
+			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthMedium);
+			tempCanvasSize = { width: 384, height: 466 } // set canvas size to match design layout
 		} else {
-			setDefaultDesignSpecs({ posX: 95, posY: 70, width: 90});
+			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthSmall);
+			tempCanvasSize = { width: 284, height: 345 } // set canvas size to match design layout
 		}
+		setDefaultDesignSpecs(tempDefaultDesignSpecs);
+		setCanvasSize(tempCanvasSize);
 	}
 
 	function setNewDesign(image) {
@@ -512,16 +535,16 @@ export default function ScreenprintDesigner() {
 	// =======================================
 	// Share Card functions
 	// =======================================
-	function createCanvas(width, height) {
+	function createCanvas() {
 		const canvas = document.createElement('canvas');
-		canvas.width = width;
-		canvas.height = height;
+		canvas.width = canvasSize.width;
+		canvas.height = canvasSize.height;
 		const context = canvas.getContext('2d');
 		context.save(); // Save the current state
 		context.fillStyle = garmentColor;
-		context.fillRect(0, 0, width, height);
+		context.fillRect(0, 0, canvasSize.width, canvasSize.height);
 		context.restore(); // Restore to the state saved by the most recent call to save()
-		shareFileRef.current.prepend(canvas);
+		shareFileRef.current.prepend(canvas); // display canvas for testing
 		return canvas;
 	}
 
@@ -610,9 +633,7 @@ export default function ScreenprintDesigner() {
 	}
 
 	function shareCardClickHandler() {
-		const canvasWidth = 584;
-		const canvasHeight = 682;
-		const canvas = createCanvas(canvasWidth, canvasHeight);
+		const canvas = createCanvas();
 		if (designRefs.current[0] !== null) {
 			drawDesignsToCanvas(canvas);
 		};
